@@ -1,17 +1,14 @@
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
+from src.video import extract_frames
 import os
 
 load_dotenv()
 
 API_KEY = os.getenv("GEMINI_API_KEY")
 
-IMAGE_PATHS = [
-    "path/to/image1.jpg",
-    "path/to/image2.png",
-    "path/to/image3.jpeg",
-]
+IMAGE_PATHS = extract_frames("data/sample.mp4")
 
 def describe_multiple_images(api_key: str, image_paths: list[str]) -> str:
     image_parts = []
@@ -26,7 +23,7 @@ def describe_multiple_images(api_key: str, image_paths: list[str]) -> str:
     
     client = genai.Client(api_key=api_key)
 
-    prompt = "Please describe each of these images in detail, and label them Image 1, Image 2, etc.:"
+    prompt = "I am providing the frame of a video. Describe what is happening in the scene. Be as detailed as possible. The scene is a cut from a video, so please describe the action, characters, and any other relevant details. Also desribe the emotions that video wants to convey (use emojis also)."
     contents = [prompt] + image_parts
 
     response = client.models.generate_content(

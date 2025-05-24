@@ -2,5 +2,4 @@ google-genai
 python-dotenv
 scenedetect[opencv] 
 opencv-python  
-ffmpeg-python 
-faster-whisper
+audio-extract

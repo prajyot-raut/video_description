@@ -1,10 +1,10 @@
 from scenedetect import detect, AdaptiveDetector
-from utils import get_images_from_folder
+from src.utils import get_images_from_folder
 import cv2
 import os
 
 
-def extract_frames(video_path: str, output_dir: str = "video_frames") -> list[str]:
+def extract_frames(video_path: str, output_dir: str = "data/video_frames") -> list[str]:
     """
     Extract frames where scene is changing from a video file and save them to a specified directory.
 

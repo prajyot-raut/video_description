@@ -9,8 +9,16 @@ load_dotenv()
 
 API_KEY = os.getenv("GEMINI_API_KEY")
 
-IMAGE_PATHS = extract_frames("data/sample.mp4")
-transribe = transcribe_audio("data/sample.mp4")
+if not API_KEY:
+    raise ValueError("GEMINI_API_KEY environment variable is not set.")
+
+VIDEO_PATH = "data/video3.mp4"
+
+IMAGE_PATHS = extract_frames(VIDEO_PATH)
+transribe = transcribe_audio(VIDEO_PATH)
+
+print("Transcription of the video:")
+print(transribe)
 
 def describe_multiple_images(api_key: str, image_paths: list[str]) -> str:
     image_parts = []

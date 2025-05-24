@@ -3,3 +3,4 @@ python-dotenv
 scenedetect[opencv] 
 opencv-python  
 audio-extract
+groq

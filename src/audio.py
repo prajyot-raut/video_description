@@ -5,20 +5,30 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-if __name__ == "__main__":
-    video_file = "./data/video.mp4"
-    audio_file = "./data/audio.wav"
+def transcribe_audio(video_path: str, audio_path: str = "./data/audio.wav") -> str:
+    """
+    Transcribe audio from a file using Groq's Whisper model.
+    
+    Args:
+        filename (str): Path to the audio file.
+        
+    Returns:
+        str: Transcription of the audio.
+    """
 
-    # 1) Extract audio
-    extract_audio(video_file, audio_file, output_format="wav",overwrite=True)
+    # Extract audio
+    extract_audio(video_path, audio_path, output_format="wav",overwrite=True)
 
+    # transcribe audio using Groq
+    if not os.getenv("GROQ_API_KEY"):
+        raise ValueError("GROQ_API_KEY environment variable is not set.")
+    
     client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-    filename = "./data/audio.wav"
 
-    with open(filename, "rb") as file:
+    with open(audio_path, "rb") as file:
         transcription = client.audio.transcriptions.create(
-        file=(filename, file.read()),
+        file=(audio_path, file.read()),
         model="whisper-large-v3",
         response_format="verbose_json",
         )
-        print(transcription.text)
+        return (transcription.text)

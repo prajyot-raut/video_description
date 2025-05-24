@@ -2,6 +2,7 @@ from google import genai
 from google.genai import types
 from dotenv import load_dotenv
 from src.video import extract_frames
+from src.audio import transcribe_audio
 import os
 
 load_dotenv()
@@ -9,6 +10,7 @@ load_dotenv()
 API_KEY = os.getenv("GEMINI_API_KEY")
 
 IMAGE_PATHS = extract_frames("data/sample.mp4")
+transribe = transcribe_audio("data/sample.mp4")
 
 def describe_multiple_images(api_key: str, image_paths: list[str]) -> str:
     image_parts = []
@@ -23,7 +25,7 @@ def describe_multiple_images(api_key: str, image_paths: list[str]) -> str:
     
     client = genai.Client(api_key=api_key)
 
-    prompt = "I am providing the frame of a video. Describe what is happening in the scene. Be as detailed as possible. The scene is a cut from a video, so please describe the action, characters, and any other relevant details. Also desribe the emotions that video wants to convey (use emojis also)."
+    prompt = "I am providing the frame of a video. Describe what is happening in the scene. Be as detailed as possible. The scene is a cut from a video, so please describe the action, characters, and any other relevant details. Also desribe the emotions that video wants to convey (use emojis also). Here is the transcription of the video: " + transribe + "\n\n"
     contents = [prompt] + image_parts
 
     response = client.models.generate_content(

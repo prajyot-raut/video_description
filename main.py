@@ -47,3 +47,15 @@ def describe_multiple_images(api_key: str, image_paths: list[str]) -> str:
 if __name__ == "__main__":
     desc = describe_multiple_images(API_KEY, IMAGE_PATHS)
     print(desc)
+
+    os.makedirs("output", exist_ok=True)
+    out_path = os.path.join("output", "output.md")
+
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write("# Video Description\n\n")
+        f.write("## Transcription\n\n")
+        f.write(transcription.strip() + "\n\n")
+        f.write("## Description\n\n")
+        f.write(desc.strip() + "\n")
+
+    print(f"Wrote output to {out_path}")
